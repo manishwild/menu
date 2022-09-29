@@ -1,25 +1,36 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+import menu from './data'
+import Category from './Category'
+import Menu from './Menu'
+// Set will only give unique value
+const allCategories = ['all', ...new Set(menu.map((item) => item.category))]
+console.log(allCategories)
 
-function App() {
+const App = () => {
+  const [menuItems, setMenuItems] = React.useState(menu)
+  const [categories, setCategories] = React.useState(allCategories)
+
+  function filterItems(category) {
+    if (category === 'all') {
+      setMenuItems(menu)
+      return
+    }
+    const newItems = menu.filter((item) => item.category === category)
+    setMenuItems(newItems)
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <main>
+      <section className="menu section">
+        <div className="title">
+          <h2>Resturant Menu</h2>
+          <div className="underline"></div>
+        </div>
+        <Category categories={categories} filterItems={filterItems} />
+        <Menu items={menuItems} />
+      </section>
+    </main>
+  )
 }
 
-export default App;
+export default App
